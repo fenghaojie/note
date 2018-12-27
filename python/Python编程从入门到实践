@@ -1,0 +1,20 @@
+<<Python编程从入门到实践>>学习笔记
+
+第二章 变量和简单数据类型
+  2.1
+    print("hello world")
+    msg = "hello world"
+    print(msg)
+
+  2.3 字符串
+    用引号括起的都是字符串，引号可以是单引号，也可以是双引号
+    print("hello 'world'")
+    print('hello "world"')
+    msg = " hello world  "
+    print(msg.title()) #将每个单词的首字母大写
+    print(msg.upper()) #转大写
+    print(msg.lower()) #转小写
+    print(msg.lstrip()) #移除字符串左边的空白
+    print(msg.rstrip()) #移除字符串右边的空白
+    print(msg.strip())  #移除字符串两边的空白
+    print("Lucy, " + msg.title()) #字符串拼接
