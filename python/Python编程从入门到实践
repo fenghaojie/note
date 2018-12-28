@@ -18,3 +18,256 @@
     print(msg.rstrip()) #移除字符串右边的空白
     print(msg.strip())  #移除字符串两边的空白
     print("Lucy, " + msg.title()) #字符串拼接
+    print("hello\n\tworld") #换行和制表符
+
+    python2中，print不需要括号  print "hello world"
+    python3中，print是函数，需要括号  print ("hello world")
+
+  2.4 数字
+    python中可以对整数执行+-*/运算
+    2 + 3
+    2 * 3
+    两个乘号表示乘方运算
+    3 ** 2
+    3 ** 3
+    python支持运算次序，也可以用括号改变运算次序
+
+    python将带小数点的数字都成为浮点数，浮点数也可以进行+-*/，但需要注意的是，结果包含的小数位数是不确定的
+    
+    函数 str() 让python将非字符串值表示为字符串
+    age = 18
+    print ("Happy " + str(age) + "rd Birthday")
+
+    python2中，整数除以整数结果为整数，小数部分会被删除
+    python3中，整数除以整数结果是实际结果
+
+  2.5 注释
+    python中注释用 # 标识，#号后的内容会被解释器忽略
+
+  2.6 python之禅
+    python社区的理念都包含在Tim Peters撰写的Python之禅中，要获悉这些内容，在解释器中执行下述语句就可以得到
+    import this
+
+第三章 列表简介
+  3.1 列表是什么
+    在python中用方括号[]来标识列表，并用逗号分隔其中的元素，用print函数打印列表时，会将方括号也打印出来
+    列表的索引从0开始，可以使用索引访问列表元素 letters[1]，访问元素时，只会返回元素内容，不包含方括号与引号
+    索引为-1表示访问列表最后一个元素，索引为负数代表访问倒数第几个元素，仅当列表为空时，这样访问会报错
+
+  3.2 修改、添加和删除元素
+    letters[0] = 'd'  #修改列表letters索引为0处的元素值
+    letters.append('z')  #在列表末尾添加元素
+    letters.insert(0, 'a')  #在列表letters索引为0处插入元素
+    empty_list = [] #创建空列表
+    
+    del letters[2] #删除索引为2处的元素
+    val = letters.pop() #弹出列表末尾的元素，并存到变量val中
+    val = letters.pop(2) #弹出列表索引为2处的元素，并存到变量val中
+    letters.remove('d') #移除列表中第一个值为d的元素
+
+  3.3 组织列表
+    letters.sort() #对列表按元素字母顺序排序
+    letters.sort(reverse=True) #对列表按字母顺序相反顺序排序
+    
+    arr = sorted(letters) #按元素字母顺序排序，但不改变列表中的元素顺序，并存到列表arr中
+    arr = sorted(letters, reverse=True) #按元素字母顺序相反顺序排序，但不改变列表中元素的顺序，并存到列表arr中
+
+    reverse(letters) #反序列表元素顺序，如需回复列表，再次执行reverse函数
+
+    list_length = len(letters) #获取列表长度，并存到变量list_length中
+
+第四章 操作列表
+  4.1 遍历整个列表
+    # 遍历列表letters，for循环语句下面的带缩进的每行都认为是for循环体的一部分
+    for elem in letters:
+        print(elem)
+
+  4.2 避免缩进错误
+    for循环语句后的:号
+    for循环语句下的带缩进的行都认为是for循环体
+
+  4.3 创建数值列表
+    range(1, 5) #创建一系列的数字，左闭右开
+    for elem in range(1, 5):
+        print(elem)
+
+    numbers = list(range(1,6)) #用list()函数将range生成的结果转为数字列表
+
+    使用range时还可以指定步长
+    numbers = list(range(1, 10, 2)) #步长为2
+
+    min(numbers) #求数字列表中最小元素
+    max(numbers) #求数字列表总最大元素
+    sum(numbers) #求数字列表元素总和
+
+    列表解析 由列表名，方括号，表达式，for循环组成，其中for循环提供值给表达式，生成列表元素
+    numbers = [value**2 for value in range(1, 11)]
+
+  4.4 使用列表的一部分
+    切片，要使用切片，需要指定要使用的第一个元素和最后一个元素的索引，与range()函数一样，到达最后一个索引时停止
+    print(letters[0:3]) #打印索引为0,1,2的元素
+    print(letters[1:4]) #打印索引为1,2,3的元素
+    切片起始索引省略时，代表从0开始，结束索引省略时，代表到列表末尾
+    print(letters[:3])
+    print(letters[3:])
+    print(letters[-3:])
+    print(letters[:-3])
+
+    # 遍历切片
+    for elem in letters[:-3]:
+        print(elem)
+
+    # 列表复制
+    copy_letters = letters #这种方式只是将变量copy_letters也关联到了变量letters关联的列表，修改列表后，两者的内容都发生改变
+    copy_letters = letters[:] #这种方式将创建的letters切片副本赋值给copy_letters，letters与copy_letters关联的是不同的列表
+
+  4.5 元组
+    python将不能修改的值成为不可变的，而不可变的列表被称为元组
+
+    元组看起来犹如列表，但使用圆括号，而不是方括号来标识
+    tp = (100, 200, 300)
+    print(tp[1]) #修改元组元素值时，解释器会报错
+
+    虽然元组元素值不可改变，但是元组变量可以被重新赋值
+
+第五章 if语句
+  5.2 条件测试
+    val = 'Hello'
+    if val == 'Hello':
+        print("equals")
+    else:
+        print("not equals")
+
+    if val != 'hello':
+        print("not equals")
+    else:
+        print("equals")
+    dig = 10
+    if dig == 10:
+        print("equals")
+    else:
+        print("not equals")
+    
+    dig < 11
+    dig <= 10
+    dig > 9
+    dig >= 10
+
+    使用and和or检查多个条件
+    if dig > 7 and dig < 12:
+        print("ok")
+    if dig >7 or dig < 12:
+        print("ok")
+
+    检查列表中是否包含特定值
+    if 'd' in letters:
+        print("in")
+
+    检查特定值是否不包含在列表中
+    esp = "d"
+    if esp not in letters:
+        print("not in")
+
+    布尔表达式
+    game_active = True
+    can_edit = False
+
+  5.3 if语句
+    if age < 4:
+        print("4")
+    elif age < 18:
+        print("18")
+    else:
+        print("old")
+
+  5.4 使用if语句处理列表
+    if letters:
+        print("列表letters非空")
+    else:
+        print("列表letters是空的")
+
+第六章 字典
+  6.2 使用字典
+    字典是一系列键值对
+    dic = {'color':'green', 'age':18} #键值对都放在花括号中，键和值用冒号分隔，键值对之间用逗号分隔
+    print(dic['color']) #访问键对应的值
+    dic['name'] = 'xiaoming' #添加键值对
+    empty_dic = [] #创建空字典
+    dic['color'] = 'red' #修改键对应的值
+    del dic['color'] #删除键值对
+    用多行来定义字典时，在输入花括号后按回车，再增加缩进，其它行也需要跟着缩进
+    favorite_languages = {
+        'jen':'python',
+        'sarah':'c',
+        }
+    类似
+    print("hello world" +
+        "favo"
+        )
+
+  6.3 遍历字典
+    user_0 = {
+        'username':'enrico',
+        'first':'enrico',
+        'last':'fermi',
+        }
+    # key, value为自定义的变量，items()函数返回一个键值对列表
+    for key, value in user_0.items():
+        print("\nKey: " + key)
+        print("Value: " + value)
+
+    遍历字典中的所有键，keys()函数返回一个包含所有键的列表
+    for key in user_0.keys():
+        print(key.title())
+
+    判断是否存在某个键
+    if key in user_0:
+        print("in")
+    也可以
+    if key in user_0.keys():
+        print("in")
+
+    遍历字典中所有值
+    for value in user_0.values():
+        print(value.title())
+
+    字典中的键不会重复，而值却很有可能重复，若要去掉重复的元素，可以使用集合set
+    for value in set(user_0.values()):
+        print(value.title())
+
+  6.4 嵌套
+    列表中元素为字典，或字典中元素为列表，或字典中存储字典
+
+第七章 用户输入和while循环
+  7.1 函数input()的工作原理
+    函数input()让程序暂停运行，等待用户输入一些文本，获取后python将其存放到一个变量中，它接受一个参数，作为用户输入的提示
+    message = input("Please input user name: ")
+    print(message)
+
+    使用input()函数时，python将用户输入解读为字符串
+    函数 int() 让python将用户输入解读为10进制整数
+    message = input("Enter your age: ")
+    age = int(age)
+    print(age)
+    函数 float() 让python将字符串解读为浮点数
+
+    在python2中获取用户输入的是 raw_input() 函数
+
+  7.2 while循环简介
+    number = 0
+    while number < 10:
+        if (number == 7):
+            break
+        if (number == 3):
+            continue
+        print(str(number))
+        number += 1
+
+第八章 函数
+  8.1 定义函数
+    def greet_user():
+        """显示简单问候语"""
+        print("Hello!")
+
+    三个引号代表是文档字符串注释，描述了函数时做什么的，python使用它们来生成有关程序中函数的文档
+    调用时只需输入 greet_user() 即可
