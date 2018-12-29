@@ -405,3 +405,78 @@
     每个模块也都应包含一个文档字符串，对其中的类可用于做什么进行描述
     在类中，可使用一个空行来分隔方法，而在模块中可使用两个空行来分隔类
     需要同时导入标准库中的模块和你编写的模块时，先编写导入标准库模块的import语句，再添加一个空行，然后编写导入自己编写的模块的import语句
+
+
+第十章 文件和异常
+  10.1 从文件中读取数据
+    读取整个文件
+    with open('a.txt') as file_object:
+        contents = file_object.read()
+        print(contents)
+
+    函数open()接受一个参数，文件名称，在当前工作路径目录下查找该文件
+    关键字with在不再需要访问文件后将其关闭，也可以手动调用close()函数来关闭文件
+
+    open()的参数可以是相对路径和绝对路径，在linux下路径使用/，windows下使用\，在python中\是转义标记，为在windows中正确应用，应以原始字符串的方式指定路径，即在字符串最前面的引号前加上r
+
+    逐行读取
+    with open('a.txt') as file_object:
+        for line in file_object:
+            print(line.rstrip()) #每行末尾有个换行符，print函数也会加个换行符
+
+    with open('a.txt') as file_object:
+        lines = file_object.readlines() #readlines()函数返回一个每行内容的列表
+
+  10.2 写入文件
+    with open('a.txt', 'w') as file_object:
+        file_object.write("I love dota.")
+
+    open()函数的第二个参数，默认是'r'只读模式，可选的还有'w'，写入模式，'a'，追加模式，'r+'可读可写模式
+    python只能将字符串写入文本文件，对于数值类型，需要用str()函数将其转为字符串
+
+  10.3 异常
+    try:
+        print(str(5/0))
+    except Exception as ex:
+        print(ex)
+    else:
+        print("success")
+
+    若try里的语句成功执行后，才会执行else里的代码块
+
+  10.4 存储数据
+    import json
+    json.dump() #后面用到时再查阅api
+    json.load() #同上
+
+
+第十一章 测试代码
+  11.1 测试函数
+    # 函数模块 name_function.py
+    def get_formatted_name(first, last):
+        """拼接名字"""
+        full_name = first + ' ' + last
+        return full_name.title()
+    
+    # 单元测试和测试用例 test_name_function.py
+    import unittest
+    from name_function import get_formatted_name
+
+    class NamesTestCase(unittest.TestCase):
+        """测试name_function.py"""
+
+        def test_first_last_name(self):
+            formatted_name = get_formatted_name('feng', 'haojie')
+            self.assertEqual(formatted_name, 'Feng Haojie')
+    
+    if __name__ == '__main__'
+        unittest.main()
+
+    创建一个新的类，继承自 unittest.TestCase
+    内部的测试函数必须以 test_ 打头，这样才会被自动运行
+  
+  11.2 测试类
+    与测试函数类似，不过内部有一个方法 setUp() ，该方法会被率先执行，然后才会执行test_打头的测试函数，在其内部可以创建一些调查对象，供测试函数使用
+    def setUp(self):
+        """创建调查对象和一组答案，供使用的测试方法使用"""
+        self.my_obj = Person('feng', 'haojie')
