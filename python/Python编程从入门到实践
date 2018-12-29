@@ -271,3 +271,137 @@
 
     三个引号代表是文档字符串注释，描述了函数时做什么的，python使用它们来生成有关程序中函数的文档
     调用时只需输入 greet_user() 即可
+
+  8.2 传递实参
+    def greet_animal(animal_name, animal):
+        print("Hello " + animal.title() + " " + animal_name)
+
+    greet_animal("xiaohu", "dog")
+
+    greet_animal(animal="dog", animal_name="xiaohu") #指定参数
+
+    # 形参设置默认值，如不传入值，则取默认值
+    def greet_dog(dog_name, animal="dog"):
+        print("hello " + animal.title() + " " + dog_name)
+
+  8.3 返回值
+    只需要在函数中使用return语句即可返回值
+    def add(a, b):
+        return a+b;
+    可以返回任意的python类型元素或自定义元素
+
+  8.4 传递列表
+    向函数通过参数传递一个列表，在函数内对列表做的修改，操作的都是原始列表，如果不希望修改原始数据，则可以通过切片传入列表副本
+    letters = []
+    def modify(listName):
+        # 一些修改
+
+    modify(letters) #直接对letters修改
+    modify(letters[:]) #修改的是切片副本
+
+  8.5 传递任意数量的实参
+    任意多个参数，*号会使解释器创建一个空元组，并将收到的所有值都封装到这个元组中
+    def add(*numbers):
+        sum = 0
+        for number in numbers:
+            sum += number
+        
+        return sum
+
+    有时候需要接受任意数量的实参，但预先不知道传递给函数的会是什么样的信息，这时，可将函数编写成能够接受任意数量的键值对，**会让python解释器创建一个空字典，并将收到的所有键值对都存到这个字典中
+    def build_personal_info(firstName, lastName, **otherInfo):
+        info = {}
+        info['first_name'] = firstName
+        info['last_name'] = lastName
+        for key, value in otherInfo.items():
+            info[key] = value
+        return info
+
+    my_info = build_personal_info('feng', 'haojie', age=18, sex='男')
+
+  8.6 将函数存储在模块中
+    将上述函数 build_personal_info() 放到person.py文件中，在另一个make_person.py文件中需要用build_personal_info()函数时，就需要导入该模块，使用方式为 import person 这将会导入整个person.py模块
+    import person
+    person.build_personal_info() #这种方式需要模块加句点调用
+
+    只导入模块中的某个函数
+    from person import build_personal_info
+    build_personal_info() #这种方式无需使用句点
+
+    使用as给函数指定别名，如果别的模块中的函数与本模块中的函数名称冲突或者名字太长之类的，就可以定义别名来调用
+    from person import build_personal_info as bpi
+    bpi()
+    也可以给模块指定别名
+    import person as p
+    p.build_personal_info()
+
+    导入模块中的所有函数
+    from person import *
+
+    最佳做法是，要么只导入你需要使用的函数，要么导入整个模块并使用句点表示法调用，可避免名称冲突，避免意想不到的结果
+
+  8.7 函数编写指南
+    给形参指定默认值时，等号两边不要有空格
+    函数调用中的关键字实参，等号两边也不要有空格
+
+    两个函数之间用两个空行隔开
+    所有的import语句都应放在文件开头，唯一的例外是开头使用了注释
+
+
+第九章 类
+  9.1 创建和使用类
+    class Dog():
+        """一个小狗的类"""
+        
+        def __init__(self, name, age):
+            """初始化属性name和age"""
+            self.name = name
+            self.age = age
+
+        def sit(self):
+            """模拟小狗被命令蹲下"""
+            print(self.name.title() + " is now sitting.")
+
+    Dog dog("xiaohu", 1)
+    dog.sit()
+    print(dog.name.title())
+
+    __init__()是一个特殊的方法，每当根据Dog类创建新实例时，python都会调用它，形参self必不可少，还必须位于其它形参前面，它是一个指向实例本身的引用，我们在调用方法时，不需要传递它，只需要提供我们定义的参数
+    以self为前缀的变量都可供类中的所有方法使用，我们可以通过类的任何实例来访问这些变量
+
+    在python2中创建类，要按下面的格式
+    class Dog(object):
+
+  9.3 继承
+    class ElectricCar(Car):
+        """电动汽车，继承自Car"""
+        
+        def __init__(self, name):
+            """初始化父类的属性"""
+            super().__init__(name)
+
+    创建子类时，父类必须包含在当前文件中，且位于子类前面，super()是一个特殊函数，帮助python将父类和子类关联起来
+    重写父类方法时，重新实现该方法就行
+
+  9.4 导入类
+    from car import Car #从模块中导入一个类
+    from car import Car, SmallCar #从模块中导入多个类
+    import car #导入整个模块
+    from car import * #导出模块中的所有类
+
+    需要从一个模块中导入很多类时，最好导入整个模块，并使用 modele_name.class_name语法来访问类
+
+  9.5 python标准库
+    导入标准库模块，即可使用标准库
+    默认的字典并不会记录其中的键值对添加顺序，需要时可使用collections模块中的OrderedDict类
+    from collections import OrderedDict
+    od = OrderdDict()
+    od['hello'] = 'world'
+
+  9.6 类编码风格
+    类名应采用驼峰命名法，每个单词的首字母大写，并且不使用下划线
+    实例名和模块名都采用小写格式，单词之间加上下划线
+    对于每个类，都应紧跟在类定义后面包含一个文档字符串，简要描述类功能，并遵循编写函数的文档字符串时采用的格式约定
+    每个模块也都应包含一个文档字符串，对其中的类可用于做什么进行描述
+    在类中，可使用一个空行来分隔方法，而在模块中可使用两个空行来分隔类
+    需要同时导入标准库中的模块和你编写的模块时，先编写导入标准库模块的import语句，再添加一个空行，然后编写导入自己编写的模块的import语句
