@@ -1,0 +1,280 @@
+<<C#入门经典>>学习笔记
+
+第二章 核心C#
+  2.1 第一个C#程序
+    using System;
+
+    namespace FHJ
+    {
+        class Program
+        {
+            public static void Main()
+            {
+                Console.WriteLine("hello world");
+            }
+        }
+    }
+
+  2.3 预定义数据类型
+    C#中有15个预定义类型，其中13个是值类型，两个是引用类型(string和object)
+    预定义的值类型：
+      整型（8个预定义整数类型）
+        名称     |    CTS类型       |  说明
+        sbyte    |    System.SByte  |  8位有符号的整数
+        short    |    System.Int16  |  16位有符号的整数
+        int      |    System.Int32  |  32位有符号的整数
+        long     |    System.Int64  |  64位有符号的整数
+        byte     |    System.Byte   |  8位无符号的整数
+        ushort   |    System.UInt16 |  16位无符号的整数
+        uint     |    System.UInt32 |  32位无符号的整数
+        ulong    |    System.UInt64 |  64位无符号的整数
+
+        C#中int总是32位带符号的整数，不取决于平台
+        C#认为byte类型和char类型完全不同，他们之间的编程转换必须显式写出，与整数中的其它类型不同，byte类型在默认状态下是无符号的，其有符号版本有一个特殊名称sbyte
+        如果对一个整数是int、uint、long或是ulong没有任何显式的声明，则该变量默认为int类型，为了把输入的值指定为其他整数类型，可以在数字后面加上如下字符：
+          uint ui = 123U;
+          long l = 123L;
+          ulong ul = 123UL;
+      浮点类型：
+        名称     |    CTS类型        | 说明                |   位数
+        float    |    System.Single  | 32位单精度浮点数    |   7
+        double   |    System.Double  | 64位双精度浮点数    |   15/16
+
+        如果在代码中没有对某个非整数值硬编码，则编译器一般假定该变量是double，如果想指定该值位float，可以在气候加上字符F：
+        float ff = 12.3F;
+      decimal类型
+        decimal类型表示精度更高的浮点数，专门用于进行财务计算
+        名称      |   CTS类型         | 说明                      | 位数
+        decimal   |   System.Decimal  | 128位高精度十进制数表示法 | 28
+
+        decimal d = 12.30M;
+      bool类型
+        名称    |    CTS类型        |  说明
+        bool    |    System.Boolean |  表示true或false
+
+        只能用true或false，不能用0或非0
+      字符类型
+        char System.Char 表示一个16位的（Unicode）字符
+      预定义的引用类型
+        名称       CTS类型         说明
+        object  |  System.Object | 根类型，CTS中的其他类型都是从它派生而来的（包括值类型）
+        string  |  System.String | Unicode字符串
+
+        string与引用类型在常见的操作上有一些区别，例如，字符串是不可改变的，修改其中一个字符串，就会创建一个全新的string对象，而另一个字符串不发生任何变化
+        在字符串前添加@表示使用字符串原意，比如：
+          string filePath = @"C:\a.txt"; //忽略转义，使用原始字符串，甚至可以在其中包含换行
+
+  2.4 流控制
+    foreach (int temp in arrayOfInts)
+    {
+        Console.WriteLine(temp);
+    }
+
+  2.5 枚举
+    public enum TimeOfDay
+    {
+        Morning = 0,
+        Afternoon = 1,
+        Evening = 2
+    }
+
+  2.9 控制台I/O
+    Console.WriteLine("Hello {0,4}", name);
+    其中4是正数，表示右对齐，不足4位，左补空格，负数表示左对齐
+
+  2.11 C#预处理器指令
+    #define DEBUG  //定义符号DEBUG
+    #undef DEBUG  //如果定义了DEBUG符号，就取消这个符号，负责什么都不做
+    
+    #if DEBUG
+      // do something
+    #elif RELEASE
+      // do something
+    #else
+      // do something
+    #endif
+
+    #if和#elif还支持一组逻辑运算符 "!" "==" "!=" "||"
+
+    #warning 会在编译时显示后面的字符串，然后继续编译
+      #warning "不要忘记删除该行代码"
+
+    #error 会在编译时显示后面的字符串，然后停止编译
+      #error "不要忘记删除下面的bug代码"
+
+    #region和#endregion用于把一段代码标记为一个块
+      #region 下面代码块用于处理用户输入
+          // some code
+      #endregion
+
+    C#中常量用法  const int a = 10;
+
+第三章 对象和类型
+  3.1 类和结构
+    结构和类的区别是它们在内存中的存储方式、访问方式（类是存储在堆上的引用类型，而结构是存储在栈上的值类型）和它们的一些特征（如结构不支持继承）。较小的数据类型使用结构可提高性能。 
+    对于类和结构，都是用new关键字来声明实例
+
+  3.2 类
+    类成员的可访问性可以是public、protected、internal protected、private、internal
+    函数的参数可以通过引用传递或值传递方式传递。C#中，除非特别说明，所有的参数都通过值来传递
+    ref参数可以迫使值参数通过引用传递给方法，调用时也需要用ref标识参数，通过该方式传递的参数在传递前必须已经初始化过
+      void sf(ref int i)
+      {// some code}
+      //调用该函数
+      sf (ref i);
+    out参数传递的参数在传递时可以不初始化
+    函数的参数一般需要依赖声明顺序，但通过命名参数可以与声明顺序不同
+      string FullName(string firstName, string lastName)
+      {
+          return firstName + " " + lastName;
+      }
+      // 调用该函数
+      FullName(lastName:"Doe", firstName:"John");
+    对于重载函数，两个方法不能仅在返回类型上不同，也不能根据参数是声明位ref还是out来区分
+
+    在C#中定义属性，可以使用下面的语法：
+      public string SomeProperty
+      {
+          get
+          {
+              return "This is property value";
+          }
+          set
+          {
+              // 一些赋值操作
+              _someProperty = value;
+          }
+      }
+      其中get访问器不带任何参数，且必须返回属性声明的类型。也不应为set访问器指定任何显式参数，但编译器假定它带一个参数，其类型也与属性相同，并表示为value
+      在属性定义中省略set访问器，就可以创建只读属性，省略get访问器，则创建只写属性
+      如果属性的get和set访问器中没有任何逻辑，就可以使用自动实现的属性，这种属性会自动实现后备成员变量，如：
+        public int Age {get; set;}
+        // 不需要声明 private int age,编译器会自动创建它
+
+      构造函数中调用别的重载构造函数：
+        class Car
+        {
+            private string description;
+            private uint nWheels;
+
+            public Car(string description, uint nWheels)
+            {
+                this.description = description;
+                this.nWheels = nWheels;
+            }
+
+            public Car(string description): this(description, 4)
+            {}
+        }
+        对基类则应使用base关键字
+
+      只读关键字readonly比const灵活的多，允许把一个字段设置为常量，但需要经过计算来确定它的初始值。
+        public static readonly uint MaxDocuments;
+        static DocumentEditor()
+        {
+            MaxDocuments = CalcMaxDocumentNumber();
+        }
+        // 只读字段不能在构造函数外部赋值，若未在构造函数内部赋值，则会初始化为类型的默认值
+
+  3.3 匿名类型
+    匿名类型是一个继承自Object且没有名称的类，该类的定义从初始化器中推断，使用方式如下：
+      var captain = new {FirstName="Jams", MiddleName="T", LastName="Kirk"};
+    
+  3.4 结构
+    结构是值类型，不是引用类型，不支持继承，编译器总是提供一个无参的默认构造函数，它是不允许替换的，使用结构，可以指定字段如何在内存中的布局
+
+  3.5 部分类
+    partial关键字允许把类、结构或接口放在多个文件中。用法是将partial放在class，struct，interface关键字的前面。
+
+  3.7 Object类
+    3.7.1 System.Object()方法
+      ToString()方法：获取对象字符串表示的一种便捷方法。
+      GetHashTable()方法：如果对象放在名为映射的数据结构中，就可以使用这个方法。如果希望把类用作字典的键，就需要重写GetHashTable()方法，具体在第10章介绍
+      Equals()(两个版本)和ReferenceEquals()方法：第七章详细介绍
+      Finalize()方法：第十三章详细介绍，在引用对象作为垃圾被回收以清理资源是调用它。默认实现什么也没做。如果对象拥有对未托管资源的引用，则在该对象被删除时，就需要删除这些引用，此时需要重写该函数。垃圾收集器不能直接删除这些对未托管资源的引用，因为它只负责托管的资源，于是只能依赖用户提供的该函数
+      GetType()方法：这个方法返回从System.Type派生的类的一个实例，这个对象可以提供对象成员所属类的更多信息，包括基本类型、方法、属性等，System.Type还提供了.NET的反射技术的入口点
+      MemberwiseClone()方法：复制对象，并返回对副本的一个引用，注意，得到的副本只是一个浅表复制，即它复制了类中的所有值类型，如果类包含内嵌的引用，就只复制引用，而不复制引用的对象，该方法是受保护的，所以不能用于复制外部的对象。该方法不是虚方法，所以不能重写
+
+    3.7.2 ToString()方法
+      public override string ToString() {}
+
+    3.8 扩展方法
+      如果没有一个类的源代码，可以通过扩展方法来扩展类，扩展方法是静态方法，它是类的一部分，但实际上没有放在类的源代码中。比如有个类Money，现在需要扩展一个AddToAmount()方法，出于某种原因，不能修改最初的代码，此时必须做的所有工作就是创建一个静态类，把方法AddToAmount()添加为一个静态方法，对应代码如下：
+        public static class MoneyExtension
+        {
+            public static void AddToAmount(this Money money, decimal amountToAdd)
+            {
+                money.Amount += amountToAdd;
+            }
+        }
+
+第四章 继承
+  4.1 继承的类型
+    实现继承：表示一个类型派生与一个基类型，它拥有该基类型所有成员字段和函数，派生类采用基类型的每个函数的实现代码，除非重写
+    接口继承：表示一个类型只继承了函数的签名，没有继承任何实现的代码
+
+    C#不支持多重实现继承，支持多重接口继承
+
+  4.2 实现继承
+    C#只有公有继承，没有私有继承，派生自多个接口时，用逗号分隔
+      public class MyDerivedClass: MyBaseClass, IInterface1, IInterface2
+      {}
+
+    C#支持object关键字，作为System.Object的小名
+
+    把一个基类函数声明为virtual，就可以在派生类中重写该函数
+    也可以把属性声明为virtual，对于虚属性或重写属性，语法与非虚属性相同，但要在定义中添加关键字virtual
+    重写虚函数时，需要使用override关键字
+    需要隐藏基类的函数时，需要使用new关键字
+    调用函数的基类版本时需要使用base关键字来调用
+
+    C#允许把类和函数声明为abstract，抽象类不能实例化，抽象函数不能直接实现，必须在非抽象的派生类中重写，抽象函数本身是虚拟的，不需要提供virtual关键字，否则报错
+
+    C#允许把类和方法声明为sealed，对于类，这表示不能继承该类，对于方法，这表示不能重写该方法
+
+  4.3 修饰符
+    修饰符             | 应用于                    | 说明
+    public             | 所有类型或成员            | 任何代码均可以访问该项
+    protected          | 类型和内嵌类型的所有成员  | 只有派生的类型能访问该项
+    internal           | 所有类型或成员            | 只能在包含它的程序集中访问该项
+    private            | 类型和内嵌类型的所有成员  | 只能在它所属的类型中访问该项
+    protected internal | 类型和内嵌类型的所有成员  | 只能在包含它的程序集和派生类型的任何代码中访问该项
+
+  4.4 接口
+    接口用interface标识，不允许提供接口中任何成员的实现方式，一般只能包含方法，属性，索引器和事件的声明
+    不能实例化接口，接口既不能有构造函数，也不能有字段，也不能包含运算符重载，也不能声明关于成员的修饰符，接口成员总是公有的，不能声明为虚拟或静态
+      public interface IDisposable
+      {
+          void Dispose();
+      }
+    
+    接口可以派生
+
+第五章 泛型
+  5.1 概述
+    从值类型转换为引用类型称为装箱，反之称为拆箱，装箱和拆箱很容易使用，但性能损失较大
+    object类型非类型安全，泛型是类型安全
+
+  5.3 泛型类的功能
+    default关键字可以根据上下文环境来判断自身语义，在泛型中，可以根据传入类型来输出引用或值，若为引用类型，则返回null，若为值类型，则返回0
+    泛型约束：
+      public class DocumentManager<TDocument>
+        where TDocument : IDocument
+      {}
+      // 泛型类的类型必须实现IDocument接口
+      // where子句指定了实现IDocument接口的要求
+
+      泛型支持的几种约束类型：
+      约束             |  说明
+      where T:struct   |  对于结构约束，类型T必须是值类型
+      where T:class    |  类约束指定类型必须是引用类型
+      where T:IFoo     |  指定类型T必须实现接口IFoo
+      where T:Foo      |  指定类型T必须派生自基类Foo
+      where T:new()    |  这是一个构造函数约束，指定类型T必须有一个默认构造函数
+      where T1:T2      |  这个约束也可以指定，类型T1派生自泛型类型T2，该约束也称为裸类型约束
+
+      泛型类型可以合并多个约束，通过逗号分隔
+      在C#中，where子句的一个重要限制是，不能定义必须由泛型类型实现的运算符，运算符不能在接口中定义，在where子句中，只能定义基类，接口和默认构造函数
+
+第六章 数组
+  6.1 简单数组
