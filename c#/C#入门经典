@@ -278,3 +278,24 @@
 
 第六章 数组
   6.1 简单数组
+    foreach用法：
+      foreach (var item in someCollection) {...}
+
+    int[] arr = new int[3];
+    int[] arr = new int[3]{1,2,3};
+    int[] arr = new int[]{1,2,3};
+
+  6.2 多维数组
+    在C#中声明二维数组，需要在方括号中加上一个逗号
+      int[,] twodim = new int[3,3];
+      int[,] twodim = {{1,2,3}, {3,4,5}};
+    在花括号中使用两个逗号，就可以声明一个三维数组
+
+    可以通过数组的Length属性来获取数组的长度
+
+  6.4 Array类
+    Array类的Length属性可以获取数组的长度，LongLength属性在数组长度超过整数取值范围时使用来获取数组长度，Rank属性可以获取数组的维度
+    Array是个抽象类，不能通过使用构造函数来创建数组，可以使用它的静态方法CreateInstance()创建数组，该方法第一个参数是元素类型，如typeof(int)，第二个参数是数组长度，SetValue()方法设置对应元素的值，GetValue()方法读取对应元素的值
+    复制数组，会使数组实现ICloneable接口，这个接口定义的Clone()方法会创建数组的浅表副本
+    Array类使用快速排序算法对数组中的元素进行排序，Sort()方法需要数组中的元素实现IComparable接口的CompareTo()方法，相等返回0，该对象应排在参数对象的前面就返回小于0的值，大于就返回大于0的值
+    对于一个已经实现了IComparable接口的CompareTo()方法的类，如果需要进行不同的排序方式，可以单独定义一个实现ICompare<T>的Compare()方法的类，将该类对象作为第二个参数传递给Sort()函数，或者传递一个委托
