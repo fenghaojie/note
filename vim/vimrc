@@ -1,0 +1,69 @@
+" 不与vi兼容
+set nocompatible
+
+" 语法高亮
+syntax on
+
+" 底部显示当前处于命令模式还是插入模式
+set showmode
+
+" 底部显示当前键入的指令
+set showcmd
+
+" 开启文件类型检查，并且载入与该类型对应的缩进规则
+filetype indent on
+
+" 开启自动缩紧
+set autoindent
+
+" 按下tab键vim显示的空格数
+set tabstop=4
+
+" >> << == 命令时增加减少或取消的缩进宽度
+set shiftwidth=4
+
+" 自动将文本中的制表符转为空格
+set expandtab
+
+" 制表符转换为多少个空格
+set softtabstop=4
+
+" 显示行号
+set number
+
+" 当前行高亮
+set cursorline
+
+" 显示状态栏
+set laststatus=2
+
+" 在状态栏显示光标的当前位置
+set ruler
+
+" 自动高亮对应的圆括号、方括号、大括号
+set showmatch
+
+" 搜索时高亮显示匹配结果
+set hlsearch
+
+" 输入搜索模式时，每输入一个字符，就自动跳到第一个匹配的结果
+set incsearch
+
+" 搜索时忽略大小写
+set ignorecase
+
+" 打开的ignorecase时，对于只有一个大写字母的搜索词，将大小写敏感；其他情况不敏感
+set smartcase
+
+" 不创建备份文件
+set nobackup
+
+" 自动切换工作目录
+set autochdir
+
+" 记住历史1000次内的操作
+set history=1000
+
+" 命令模式下，底部操作指令按下Tab键自动补全。第一次按下Tab，会显示所有匹配的操作指令的清单；第二次按下Tab，会一次选择各个指令
+set wildmenu
+set wildmode=longest:list,full
